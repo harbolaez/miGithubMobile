@@ -18,7 +18,7 @@ export default StyleSheet.create({
   label: {
     marginTop: 15,
     marginBottom: 10,
-    color: '#aeb6c0',
+    color: '#AEB6C0',
     letterSpacing: .6,
     fontSize: 14,
   },

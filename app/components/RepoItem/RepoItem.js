@@ -1,24 +1,21 @@
 import React, { Component } from 'react';
 
 import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
+  StyleSheet, View, Text, TouchableOpacity,
 } from 'react-native';
 
 import repoItemStyles from './repoItemStyles';
+import ItemList from './ItemList';
 
-const RepoItem = ({title, repo}) => {
+import { Actions } from 'react-native-router-flux'; // New code
+
+const RepoItem = ({ repo }) => {
   return (
-    <TouchableOpacity>
-      <View style={repoItemStyles.item}>
-        <Text style={repoItemStyles.title}> { title.toLowerCase() } </Text>
-        <Text style={[repoItemStyles.updated, repoItemStyles.label]}> Updated 7 month ago </Text>
-        <View style={repoItemStyles.info}>
-          <Text style={[repoItemStyles.label, repoItemStyles.language]}> {"Ruby"} </Text>
-        </View>
-      </View>
+    <TouchableOpacity onPress={() => Actions.userRepo({
+      id: repo.id,
+      repoName: repo.name
+    })}>
+      <ItemList repo={repo} />
     </TouchableOpacity>
   )
 }

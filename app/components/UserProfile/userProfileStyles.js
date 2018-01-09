@@ -7,7 +7,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     padding: 15,
-    backgroundColor: '#E63946',
+    backgroundColor: '#F71735',
   },
   topProfile: {
     display: 'flex',
@@ -36,8 +36,6 @@ export default StyleSheet.create({
     height: 40,
     display: 'flex',
     justifyContent: 'center',
-  },
-  userBio: {
   },
   bioText: {
     lineHeight: 18,

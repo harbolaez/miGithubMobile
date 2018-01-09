@@ -1,24 +1,29 @@
 import React, { Component } from 'react';
+
 import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  FlatList,
+  StyleSheet, View, Text, ScrollView, FlatList,
 } from 'react-native';
 
 import {
-  UserProfile,
-  RepoItem
-} from '../../components'
-
-import {
-  Button,
+  Button, Spinner,
 } from 'native-base';
 
 import styles from './styles'
 
-export default class Dashbaord extends Component {
+import _ from 'lodash';
+
+import { connect } from 'react-redux';
+
+import {
+  fetchUser, fetchRepos,
+} from '../../actions'
+
+import {
+  UserProfile, RepoItem,
+} from '../../components'
+
+
+class Dashbaord extends Component {
 
   constructor(props){
     super(props);
@@ -33,25 +38,32 @@ export default class Dashbaord extends Component {
       <RepoItem
         key={index}
         repo={item}
-        title={"Test"}
       />
     )
   }
 
+  componentDidMount(){
+    this.props.fetchUser("henryarbolaez")
+    this.props.fetchRepos("henryarbolaez", 8)
+  }
+
   render(){
-    const { navigation } = this.props;
+    const { repos } = this.props;
     return(
       <ScrollView>
         <View style={styles.container}>
-          <UserProfile />
+          <UserProfile
+            user={this.props.user}
+          />
           <View style={styles.paddingAround5}>
             <Text style={[styles.label, {fontSize: 16}]}>{"Most Pupulars".toUpperCase()}</Text>
-            <FlatList
-              data={[{id: 1, item: 'a'}, {id: 2, item: 'b'}]}
-              extraData={1}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderItem}
-            />
+            {_.isEmpty(repos) ? <Spinner color='red' /> : (
+              <FlatList
+                data={repos}
+                keyExtractor={this._keyExtractor}
+                renderItem={this._renderItem}
+              />
+            )}
             <View>
               <Button dark style={styles.allRepoButton}>
                 <Text style={[styles.whiteColor]}>{"View all Repos".toUpperCase()}</Text>
@@ -63,3 +75,17 @@ export default class Dashbaord extends Component {
     )
   }
 }
+
+
+const mapStateToProps = ({ user, repos }) => {
+  return {
+    user,
+    repos
+  }
+}
+
+export default connect(mapStateToProps, {
+  fetchUser,
+  fetchRepos
+})(Dashbaord)
+

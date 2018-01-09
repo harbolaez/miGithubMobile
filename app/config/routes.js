@@ -1,61 +1,63 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { StackNavigator, DrawerNavigator, TabNavigator } from 'react-navigation'
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { StyleSheet, Text, View } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Router, Scene, Actions } from 'react-native-router-flux';
+
+import { connect, Provider } from 'react-redux';
+import configureStore from '../store/configureStore';
+const store = configureStore();
+const RouterWithRedux = connect()(Router);
+
 
 // Containers
 import {
-  Dashboard
+  Dashboard,
+  SearchUser,
 } from '../containers'
 
-const Tabs = TabNavigator({
-  Dashboard: {
-    screen: Dashboard,
-    navigationOptions: {
-      drawerLabel: 'Dashboard',
-      headerTitle: 'Dashboard',
-      drawerIcon: ({ tintColor, focused }) => (
-        <Ionicons
-          name={focused ? 'ios-home' : 'ios-home-outline'}
-          size={28}
-          style={{ color: tintColor }}
-        />
-      ),
-      tabBarIcon: ({ tintColor, focused }) => (
-        <Ionicons
-          name={focused ? 'ios-home' : 'ios-home-outline'}
-          size={28}
-          style={{ color: tintColor }}
-        />
-      ),
-    },
-  },
-}, {
-  order: ["Dashboard"],
-  tabBarPosition: 'bottom',
-  tabBarOptions: {
-    showLabel: false,
-    activeTintColor: '#FFFFFF',
-    labelStyle: {},
-    tabStyle: {},
-    style: {
-      backgroundColor: '#261447',
-    },
+import {
+  UserRepo,
+} from '../components'
+
+const styles = StyleSheet.create({
+  dashboardHeader: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
-
-});
-
-const RootDrawer = DrawerNavigator({
-  Tabs: { screen: Tabs },
-});
-
-const stackNavigator = StackNavigator({
-  Dashboard: {
-    screen: RootDrawer,
-  },
-}, {
-  initialRouteName: 'Dashboard',
 })
 
+const Right = () => {
+  return (
+    <Icon name="address-card" size={26}
+      style={{
+        marginRight: 'auto',
+        position: 'absolute',
+        left: 10,
+      }}
+      onPress={() => Actions.searchUser({name: 'Lucy'})}
+    />
+  )
+}
 
-export default stackNavigator;
+// export default stackNavigator;
+const router = () => {
+  return (
+    <Provider store={store}>
+      <RouterWithRedux>
+        <Scene key="root">
+          <Scene key="dashboard"
+            component={Dashboard}
+            initial
+            title={"Dashboard"}
+            renderLeftButton={() => <Right />}
+          />
+          <Scene key="searchUser" component={SearchUser} title="Searching" />
+          <Scene key="userRepo" component={UserRepo} title="Repository" />
+        </Scene>
+      </RouterWithRedux>
+    </Provider>
+  )
+}
+
+export default router;
