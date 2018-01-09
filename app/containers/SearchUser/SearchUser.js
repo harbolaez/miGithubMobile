@@ -4,6 +4,10 @@ import {
   StyleSheet, View, Text,
 } from 'react-native';
 
+import {
+  Form, Item, Input
+} from 'native-base';
+
 export default class SearchUser extends Component {
 
   constructor(props){
@@ -14,7 +18,11 @@ export default class SearchUser extends Component {
     const { navigation } = this.props;
     return(
       <View>
-        <Text>SearchUser</Text>
+        <Form>
+          <Item last>
+            <Input placeholder="Search" />
+          </Item>
+        </Form>
       </View>
     )
   }

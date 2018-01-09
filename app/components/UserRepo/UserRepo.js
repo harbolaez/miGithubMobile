@@ -5,6 +5,7 @@ import { MarkdownView } from 'react-native-markdown-view';
 import _ from 'lodash';
 import numeral from 'numeral';
 import randomColor from 'randomcolor';
+import { Buffer } from 'buffer';
 
 import {
   StyleSheet, View, Text, Image, ScrollView,
@@ -108,7 +109,7 @@ class UserRepo extends Component {
           <Tab heading="README" >
             <ScrollView>
               { !!readmeContent
-                ? <MarkdownView style={styles.padding10}>{window.atob(readmeContent)}</MarkdownView>
+                ? <MarkdownView style={styles.padding10}>{Buffer.from(readmeContent, 'base64').toString('ascii')}</MarkdownView>
                 : <Spinner color='red' />
               }
             </ScrollView>

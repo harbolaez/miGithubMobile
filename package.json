@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "buffer": "^5.0.8",
     "expo": "^23.0.4",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
