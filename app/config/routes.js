@@ -36,7 +36,7 @@ const Right = () => {
         position: 'absolute',
         left: 10,
       }}
-      onPress={() => Actions.searchUser({name: 'Lucy'})}
+      onPress={() => Actions.searchUser()}
     />
   )
 }
