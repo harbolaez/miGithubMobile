@@ -9,6 +9,7 @@ import {
 
 const ItemList = (props) => {
   const { repo } = props;
+  console.log(repo.name)
   return (
     <View style={repoItemStyles.item}>
       <Text style={repoItemStyles.title}> { repo.name.toLowerCase() } </Text>

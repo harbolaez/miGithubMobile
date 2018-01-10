@@ -64,8 +64,11 @@ class UserRepo extends Component {
   }
 
   componentDidMount(){
-    const { repos, id } = this.props;
-    this.setState(() => ({ repo: getSpecificRepo(repos.data, id)[0]} ))
+    const { popularRepos, repos, id } = this.props;
+    const anyRepos = repos.length > 0;
+    this.setState(() => ({
+      repo: getSpecificRepo((anyRepos ? repos.data : popularRepos.data), id)[0]
+    }))
     this._onTabChange( { ref: {props: {heading: 'readme'}}} )
   }
 
@@ -120,7 +123,7 @@ class UserRepo extends Component {
     return (
       <Container>
         <View style={{minHeight: 110}}>
-          { !!repo && <ItemList repo={repo} /> }
+          { repo && <ItemList repo={repo} /> }
         </View>
         <Tabs initialPage={0} onChangeTab={this._onTabChange}>
           <Tab heading="README" >
@@ -158,10 +161,11 @@ class UserRepo extends Component {
   }
 }
 
-const mapStateToProps = ({ user, repos }) => {
+const mapStateToProps = ({ user, repos, popularRepos }) => {
   return {
     user,
-    repos
+    repos,
+    popularRepos
   }
 }
 
