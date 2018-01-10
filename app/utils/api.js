@@ -5,7 +5,9 @@ const REPO_URL = `https://api.github.com/repos`
 
 export const getProfile = (username) => axios.get(`${ROOT_URL}/${username}`);
 
-export const getRepos   = (username, limit=100) => axios.get(`${ROOT_URL}/${username}/repos?per_page=${limit}&sort=stars`);
+export const getRepos   = (username, limit=100, page=1) => {
+  return axios.get(`${ROOT_URL}/${username}/repos?per_page=${limit}&sort=stars&page=${page}`)
+};
 
 export const getStarCount = (repos) => {
   return repos.data.reduce((count, repo) => {
@@ -18,8 +20,11 @@ export const getSpecificRepo = ( repos, repo_id ) => {
 }
 
 export const getRepoInfo = (username, repo_name, type) => {
-  console.log(`${REPO_URL}/${username}/${repo_name}/${type}`)
   return axios.get(`${REPO_URL}/${username}/${repo_name}/${type}`)
+}
+
+export const fetchUsers = (query) => {
+  return axios.get(`https://api.github.com/search/users?q=${query}`)
 }
 
 export const bytesToSize = (bytes) => {
