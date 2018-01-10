@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
-#### Tested for ios, please run `npm run ios`
+#### Tested for ios, please run `npm run ios` or `yarn run ios`
 
 ### This project is a way to search for github usernames, repos and see their repo files and information.
 
