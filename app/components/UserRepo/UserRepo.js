@@ -60,11 +60,12 @@ class UserRepo extends Component {
       repoLanguages: null,
     }
     this._onTabChange = this._onTabChange.bind(this);
+    this._renderMarkDown = this._renderMarkDown.bind(this)
   }
 
   componentDidMount(){
     const { repos, id } = this.props;
-    this.setState(() => ({ repo: getSpecificRepo(repos, id)[0]} ))
+    this.setState(() => ({ repo: getSpecificRepo(repos.data, id)[0]} ))
     this._onTabChange( { ref: {props: {heading: 'readme'}}} )
   }
 
@@ -76,20 +77,36 @@ class UserRepo extends Component {
         if (_.isNull(readmeContent)) {
           getRepoInfo(username, repo_name, 'readme')
           .then(({ data }) => this.setState( () => ({ readmeContent: data.content }) ))
+          .catch(() => console.log("Error!") )
         }
         break;
       case 'files':
         if (_.isNull(fileContents)) {
           getRepoInfo(username, repo_name, 'contents')
           .then(({ data }) => this.setState( () => ({ fileContents: data }) ))
+          .catch(() => console.log("Error!") )
         }
         break;
       case 'languages':
         if (_.isNull(repoLanguages)) {
           getRepoInfo(username, repo_name, 'languages')
           .then(({ data }) => this.setState( () => ({ repoLanguages: data }) ))
+          .catch(() => console.log("Error!") )
         }
         break;
+    }
+  }
+
+  _renderMarkDown() {
+    try {
+      return (
+        <View>
+          <MarkdownView style={styles.padding10}>
+            { Buffer.from(this.state.readmeContent, 'base64') }
+          </MarkdownView>
+        </View>
+      )
+    } catch (error) {
     }
   }
 
@@ -109,7 +126,7 @@ class UserRepo extends Component {
           <Tab heading="README" >
             <ScrollView>
               { !!readmeContent
-                ? <MarkdownView style={styles.padding10}>{Buffer.from(readmeContent, 'base64').toString('ascii')}</MarkdownView>
+                ? this._renderMarkDown()
                 : <Spinner color='red' />
               }
             </ScrollView>
@@ -129,11 +146,7 @@ class UserRepo extends Component {
             <ScrollView>
               <View style={[styles.padding10, {marginBottom: 15}]}>
                 { !!perctLangs
-                  ? perctLangs.map((lang, ix)=>{
-                      return (
-                        <Language key={ix} lang={lang}/>
-                      )
-                    })
+                  ? perctLangs.map((lang, ix)=> <Language key={ix} lang={lang}/> )
                   : <Spinner color='red' />
                 }
               </View>

@@ -2,12 +2,24 @@ import {
   FETCH_REPOS
 } from '../actions'
 
-const initialState = {};
+const initialState = {
+  data: [],
+  nextLink: null,
+};
 
 export default function FetchUserRepos( state = initialState, action ){
-  switch(action.type) {
+  const { type, payload, isReset } = action
+  switch(type) {
     case `${FETCH_REPOS}_FULFILLED`:
-      return action.payload.data
+      return {
+        data: isReset ? [...payload.data] : [...state.data, ...payload.data],
+        nextUrl: payload.headers.link
+      }
+    case FETCH_REPOS:
+      return {
+        data: [...payload],
+        nextUrl: null
+      }
     default:
       return state;
   }

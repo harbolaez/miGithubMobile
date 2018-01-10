@@ -15,7 +15,7 @@ const RepoItem = ({ repo }) => {
       id: repo.id,
       repoName: repo.name
     })}>
-      <ItemList repo={repo} />
+      { !!repo && <ItemList repo={repo} /> }
     </TouchableOpacity>
   )
 }

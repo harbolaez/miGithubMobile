@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
+import _ from 'lodash';
 
 import {
   StyleSheet, View, Text, ScrollView, FlatList,
@@ -8,20 +11,15 @@ import {
   Button, Spinner,
 } from 'native-base';
 
-import styles from './styles'
-
-import _ from 'lodash';
-
-import { connect } from 'react-redux';
-
 import {
-  fetchUser, fetchRepos,
+  fetchUser, fetchPopularRepos,
 } from '../../actions'
 
 import {
   UserProfile, RepoItem,
 } from '../../components'
 
+import styles from './styles'
 
 class Dashbaord extends Component {
 
@@ -43,12 +41,14 @@ class Dashbaord extends Component {
   }
 
   componentDidMount(){
-    this.props.fetchUser("henryarbolaez")
-    this.props.fetchRepos("henryarbolaez", 8)
+    const { username, fetchUser, fetchPopularRepos } = this.props;
+    const loginUser = _.isUndefined(username) ? "henryarbolaez" : username;
+    fetchUser(loginUser)
+    fetchPopularRepos(loginUser, 10)
   }
 
   render(){
-    const { repos } = this.props;
+    const { popularRepos } = this.props;
     return(
       <ScrollView>
         <View style={styles.container}>
@@ -57,15 +57,15 @@ class Dashbaord extends Component {
           />
           <View style={styles.paddingAround5}>
             <Text style={[styles.label, {fontSize: 16}]}>{"Most Pupulars".toUpperCase()}</Text>
-            {_.isEmpty(repos) ? <Spinner color='red' /> : (
+            {_.isEmpty(popularRepos.data) ? <Spinner color='red' /> : (
               <FlatList
-                data={repos}
+                data={popularRepos.data}
                 keyExtractor={this._keyExtractor}
                 renderItem={this._renderItem}
               />
             )}
             <View>
-              <Button dark style={styles.allRepoButton}>
+              <Button dark style={styles.allRepoButton} onPress={() => Actions.repoSearch()}>
                 <Text style={[styles.whiteColor]}>{"View all Repos".toUpperCase()}</Text>
               </Button>
             </View>
@@ -77,15 +77,15 @@ class Dashbaord extends Component {
 }
 
 
-const mapStateToProps = ({ user, repos }) => {
+const mapStateToProps = ({ user, popularRepos  }) => {
   return {
     user,
-    repos
+    popularRepos
   }
 }
 
 export default connect(mapStateToProps, {
   fetchUser,
-  fetchRepos
+  fetchPopularRepos
 })(Dashbaord)
 

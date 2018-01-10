@@ -37,16 +37,19 @@ const UserProfile = (props) => {
           {user.bio}
         </Text>
       </View>
-      <View style={userStyle.stats}>
-        {stats.map((stat, ix) => {
-          return (
-            <View key={ix} style={userStyle.statItem}>
-              <Text style={[userStyle.boldText, userStyle.statTotal]}>{stat.total}</Text>
-              <Text style={userStyle.statTitle}>{stat.title}</Text>
-            </View>
-          )
-        })}
-      </View>
+      { typeof hideStats === "undefined"
+        &&
+        (<View style={userStyle.stats}>
+              {stats.map((stat, ix) => {
+                return (
+                  <View key={ix} style={userStyle.statItem}>
+                    <Text style={[userStyle.boldText, userStyle.statTotal]}>{stat.total}</Text>
+                    <Text style={userStyle.statTitle}>{stat.title}</Text>
+                  </View>
+                )
+              })}
+            </View>)
+      }
     </View>
   )
 }
