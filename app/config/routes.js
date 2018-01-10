@@ -17,6 +17,7 @@ import {
 
 import {
   UserRepo,
+  RepoSearch,
 } from '../components'
 
 const styles = StyleSheet.create({
@@ -40,7 +41,6 @@ const Right = () => {
   )
 }
 
-// export default stackNavigator;
 const router = () => {
   return (
     <Provider store={store}>
@@ -52,8 +52,9 @@ const router = () => {
             title={"Dashboard"}
             renderLeftButton={() => <Right />}
           />
-          <Scene key="searchUser" component={SearchUser} title="Searching" />
+          <Scene key="searchUser" component={SearchUser} title="User Search" />
           <Scene key="userRepo" component={UserRepo} title="Repository" />
+          <Scene key="repoSearch" component={RepoSearch} title="Repo Search" />
         </Scene>
       </RouterWithRedux>
     </Provider>
